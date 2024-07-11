@@ -25,8 +25,6 @@ void rotate(byte f, byte a) { // where f is face, and a is number of 90 degree t
   swap(c, c+8, 1);
 }
 
-int print_nums(byte*);
-
 int main() {
   for (int i=0;i<6;i++) {
     for (int j=0;j<9;j++) {
@@ -43,12 +41,4 @@ int main() {
     print_nums(cube);
 }
 
-int print_nums(byte* cube) {
-  for (int i=0;i<6;i++) {
-    for (int j=0;j<9;j++) {
-      printf("%d ", cube[i*9+j]);
-    }
-    printf("\n");
-  }
- 
-}
+

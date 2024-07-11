@@ -1,15 +1,15 @@
 #define byte char
 
 typedef enum sides {
-    TOP, BOTTOM, LEFT, FRONT, RIGHT, BACK
+    TOP, LEFT, FRONT, RIGHT, BACK, BOTTOM
 } Side;
 
 enum colors {
-    WHITE, YELLOW, GREEN, RED, BLUE, ORANGE
+    WHITE, GREEN, RED, BLUE, ORANGE, YELLOW 
 };
 
 int print_cube(byte*);
 
 int print(byte*);
 
-
+int print_nums(byte* cube);
