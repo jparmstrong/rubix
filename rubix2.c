@@ -31,14 +31,15 @@ int main() {
       cube[i*9+j] = i;
     }
   }
+
+  // swap(9, 18, 3);
   print_cube(cube);
   print_nums(cube);
 
-  //printf("%d \n", m9(0, 3));
-  //swap(0, 51, 3);
+  printf("%d \n", m9(0, 3));
   //for (int i=0;i<4;i++)
-    rotate(0, 1), print_cube(cube);
-    print_nums(cube);
+  rotate(0, 1), print_cube(cube);
+  print_nums(cube);
 }
 
 

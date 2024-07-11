@@ -34,7 +34,8 @@ int print_cube(byte* cube) {
     for (int j=0; j<3; j++) {
         for (Side i=LEFT; i<=BACK; i++) {
             for (int k=0; k<3; k++) {
-                int a = cube[i*9 + j + k];
+                int a = cube[i*9 + j*3 + k];
+                // printf("%d ", j*3 +k);
                 printf(blocks[a]);
             }
         }
