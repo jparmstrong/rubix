@@ -50,17 +50,23 @@ int main() {
   char* cmds = "ulfrbd";
   while(1) {
     print_cube(cube);
-    printf("?> ");
+    printf("> ");
 
     if (fgets(cmd, sizeof(cmd), stdin) == NULL) {
       return 0;
     }
 
     *cmd = tolower(*cmd);
-    if(strcmp(cmd, "quit") == 0) {
-      printf("Good bye!\n");
-      break;
+
+    // Help 
+    if(cmd[0]=='?') {
+      printf("commands: Ctrl-C ? ");
+      for(int j=0;j<6;j++) 
+         printf("%c %c' ", cmds[j], cmds[j]);
+      printf("\n");
+      continue;
     }
+
     for(int i=0;i<6;i++) {
       if(cmd[0]==cmds[i]) {
         rotate(i, (cmd[1] == '\'') ? -1 : 1);
