@@ -1,4 +1,4 @@
 
 all:
-	gcc print.c rubix2.c
+	gcc print.c rubix.c -o rubix
 
