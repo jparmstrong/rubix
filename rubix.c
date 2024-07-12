@@ -52,13 +52,11 @@ int main() {
     print_cube(cube);
     printf("?> ");
 
-    // Read command using fgets()
     if (fgets(cmd, sizeof(cmd), stdin) == NULL) {
-      perror("Error reading command");
-      return 1;
+      return 0;
     }
 
-    // tolower(cmd);
+    *cmd = tolower(*cmd);
     if(strcmp(cmd, "quit") == 0) {
       printf("Good bye!\n");
       break;
