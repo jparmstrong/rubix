@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "print.h"
+#include "rubix.h"
 
 const char *blocks[] = {
     "\x1B[47m  \x1b[0m\0", // WHITE
