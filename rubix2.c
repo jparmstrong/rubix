@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 #include "rubix.h"
 
 #define SIZE 55
 byte cube[SIZE];
-byte cube_[SIZE]; // prev_state
+byte cube_[SIZE]; // prev state
 
 // Inspiration: https://stackoverflow.com/questions/500221/how-would-you-represent-a-rubiks-cube-in-code/62558531#62558531
 
@@ -45,20 +46,31 @@ int main() {
     }
   }
 
-  char cmd[10];
-  char cmds[] = {"u", "l", "r", "}
-  while(!strcmp(cmd, "quit")) {
+  char cmd[10] = {0};
+  char* cmds = "ulfrbd";
+  while(1) {
     print_cube(cube);
     printf("?> ");
-    scanf("%s", cmd);
-    if(strcmp(cmd, "quit") printf("Good bye!\n"), break;
-  
-  }
-  print_cube(cube);
-  print_nums(cube);
 
-  rotate(1, 1);
+    // Read command using fgets()
+    if (fgets(cmd, sizeof(cmd), stdin) == NULL) {
+      perror("Error reading command");
+      return 1;
+    }
+
+    // tolower(cmd);
+    if(strcmp(cmd, "quit") == 0) {
+      printf("Good bye!\n");
+      break;
+    }
+    for(int i=0;i<6;i++) {
+      if(cmd[0]==cmds[i]) {
+        rotate(i, (cmd[1] == '\'') ? -1 : 1);
+        print_cube(cube);
+ //       print_nums(cube);
+      }
+    } 
+  } 
   print_cube(cube);
   print_nums(cube);
 }
-
