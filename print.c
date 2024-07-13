@@ -44,6 +44,24 @@ int print_cube(byte* cube) {
     print_side(cube, BOTTOM, 1);
 }
 
+int print_cube2(byte* cube) {
+    print_side(cube, TOP, 1);
+
+    for (int j=0; j<3; j++) {
+        for (Side i=LEFT; i<=BACK; i++) {
+            for (int k=0; k<3; k++) {
+                int a = cube[i*9 + j*3 + k];
+                printf("%d ", j*3 +k);
+                // printf(blocks[a]);
+            }
+        }
+        if(j<2) printf("\n");
+    }
+    print_side(cube, BOTTOM, 1);
+}
+
+
+
 int print(byte* cube) {
   for (int i=0;i<54;i++) {
     if(i%9==0) printf("\n");

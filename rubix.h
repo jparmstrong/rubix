@@ -6,6 +6,8 @@ typedef enum sides {
 
 int print_cube(byte*);
 
+int print_cube2(byte*);
+
 int print(byte*);
 
 int print_nums(byte* cube);
