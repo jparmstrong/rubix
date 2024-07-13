@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 #include "rubix.h"
@@ -12,55 +13,51 @@ byte cube_[SIZE]; // prev state
 
 // rotation matrix
 const byte F[] = {6, 3, 0, 7, 4, 1, 8, 5, 2};
-const byte A[][6] = {
-  { -1,  4,  1,  2,  3, -1},
-  {  2, -1,  5, -1,  0,  4},
-  {  3,  0, -1,  5, -1,  1},
-  {  4, -1,  0, -1,  5,  2},
-  {  1,  5, -1,  0, -1,  3},
-  { -1,  2,  3,  4,  1, -1}
+
+// adjacency matrix (face and rotation: T, R, L, B)
+const byte X[][4] = {
+  {0x40, 0x30, 0x20, 0x10},
+  {0x02, 0x22, 0x52, 0x41},
+  {0x03, 0x32, 0x50, 0x11},
+  {0x01, 0x42, 0x51, 0x21},
+  {0x00, 0x12, 0x53, 0x31},
+  {0x13, 0x23, 0x33, 0x43}
 };
 
 // adjacent edges
-const byte B[][4] = {
+const byte E[][4] = {
   {0, 1, 2}, // TOP
-  {0, 3, 6}, // LEFT
   {2, 5, 8}, // RIGHT
+  {0, 3, 6}, // LEFT
   {6, 7, 8}  // BOTTOM
 };
 
-// perimeter faces
-const byte C[][4] = {
-  {0, 0, 0, 0}, // TOP
-  {1, 1, 1, 2}, // LEFT
-  {1, 3, 1, 2}, // FRONT
-  {1, 1, 3, 2}, // RIGHT
-  {1, 3, 0, 2}, // BACK
-  {3, 3, 3, 3}  // BOTTOM
-};
+void rotate_face(byte f, byte a) {
+  while(a--%4) {
+    for(int i=0;i<9;i++)
+      cube[f*9+F[8-i]] = cube_[f*9 + i];
+  }
+}
+
+#define fs(a, b) ((X[a][b] & 0xF0) >> 4)
+#define as(a, b) (X[a][b] & 0x0F)
 
 // f = face, a = number of rotations
 void rotate(byte f, byte a) {
   while(a--%4) {
     // copy prev state
     memcpy(cube_, cube, 55);
-
-    // face
-    for(int i=0;i<9;i++)
-      cube[f*9+F[8-i]] = cube_[f*9 + i];
-    
-    // adj faces
-    int i_ = 0;
-    for(int i=0;i<6;i++) {
-      if(A[f][i] == -1) continue;
-      byte f_ = A[f][i];
-      for(int k=0;k<3;k++) {
-         byte s = B[C[f][i_]][k];
-         printf("f: %d, f_: %d, i_: %d, k: %d, s: %d, B: %d\n", f, f_, i_, k, s, C[f][i_]);
-         *(cube + f_*9 + s) = *(cube_ + i*9 + s);
+    rotate_face(f, a);
+ 
+    byte n = 0;
+    for(byte i=0;i<4;i++) {
+      printf("projection: 0x%02X,  %d, %d\n", X[f][i], fs(f,i), as(f,i));
+//      rotate_face(fs(f,i), as(f,i));
+      for(byte j=0;j<3;j++) {
+        n = (4+i-1)%4;
+       // printf("%d, %d, %d \n", fs(f,i), E[as(f,i)][j], n);
+        *(cube + fs(f,i)*9 + E[as(f,i)][j]) = *(cube_ + (fs(f,n)*9) + E[as(f,n)][j]);
       }
-      i_++;
-      printf("-\n");
     }
   }
 }
@@ -72,6 +69,7 @@ int main() {
   for (int i=0;i<6;i++) {
     for (int j=0;j<9;j++) {
       cube[i*9+j] = i; // j
+
     }
   }
 
@@ -79,7 +77,7 @@ int main() {
   char* cmds = "ulfrbd";
   byte skip = 0;
    while(1) {
-    if (!skip) print_cube(cube);
+    if (!skip) print_cube(cube, 1);
     printf("> ");
 
     if (fgets(cmd, sizeof(cmd), stdin) == NULL) {
