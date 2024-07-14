@@ -1,12 +1,6 @@
 /*
-
 RUBIX CUBE 1000 
-
-Copyright (c) July 2024
-JP Armstrong
-
-
-
+Copyright (c) July 2024 - jp@armstrong.sh
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -18,7 +12,6 @@ JP Armstrong
 #define SIZE 55
 byte cube[SIZE];
 byte cube_[SIZE]; // prev state
-
 
 // rotation matrix
 const byte F[] = {6, 3, 0, 7, 4, 1, 8, 5, 2};
@@ -41,16 +34,23 @@ const byte E[][4] = {
   {6, 7, 8}  // BOTTOM
 };
 
+typedef struct Marquee {
+  char text[100];
+  int size;
+  int count;
+} Marquee;
+
+// get face and rotation from adjacent matrix
+#define fs(x, y) ((X[x][y] & 0xF0) >> 4)
+#define as(x, y)  (X[x][y] & 0x0F)
+
+
 void rotate_face(byte f, byte a) {
   while(a--%4) {
     for(int i=0;i<9;i++)
       cube[f*9+F[8-i]] = cube_[f*9 + i];
   }
 }
-
-// get face and rotation from adjacent matrix
-#define fs(x, y) ((X[x][y] & 0xF0) >> 4)
-#define as(x, y)  (X[x][y] & 0x0F)
 
 // f = face, a = number of rotations
 void rotate(byte f, byte a) {
@@ -72,7 +72,7 @@ void rotate(byte f, byte a) {
   }
 }
 
-int clear_cube(){
+void reset() {  
   for (int i=0;i<6;i++) {
     for (int j=0;j<9;j++) {
       cube[i*9+j] = i;
@@ -80,40 +80,47 @@ int clear_cube(){
   }
 }
 
+void print_cmd(char* cmd) {
+  printf("RUBIX CUBE 1000\nby JP Armstrong - July 2024\n\nCmds: ");
+
+  for(int i=0;cmd[i]!='\0';i++) {
+    printf("%c", cmd[i]);
+  }
+  printf("\n");
+}
+
 int main() {
-
-  printf("RUBIX CUBE 1000 BY JP\nBuild: %s\n", __DATE__);
-
-  clear_cube();
-
-  char cmd[10] = {0};
+  reset();
+  
+  int ci = 0;
+  char cmd[180] = {0};
   char* cmds = "ulfrbd";
   byte skip = 0;
-   while(1) {
+  while(1) {
     if (!skip) {
         printf("\e[1;1H\e[2J");
+        print_cmd(cmd);
         print_cube(cube, NUM_CUBES);
     }
     printf("> ");
 
-    if (fgets(cmd, sizeof(cmd), stdin) == NULL) {
+    if (fgets(cmd + ci, sizeof(cmd), stdin) == NULL) {
       return 0;
     }
      
-    if(skip = cmd[0]=='\n')
+    if(skip = cmd[ci]=='\n')
       continue;
 
-    *cmd = tolower(*cmd);
-    if(cmd[0]=='q')
+    if(cmd[ci]=='q')
       return 0;
 
-    if(cmd[0]=='c') {
-      clear_cube();
+    if(cmd[ci]=='c') {
+      reset();
       continue;
     }
 
     // Help 
-    if(cmd[0]=='?') {
+    if(cmd[ci]=='?') {
       printf("commands: q ? ");
       for(int j=0;j<6;j++) 
          printf("%c %c' ", cmds[j], cmds[j]);
@@ -122,10 +129,13 @@ int main() {
     }
 
     for(int i=0;i<6;i++) {
-      if(cmd[0]==cmds[i]) {
+      if(cmd[ci]==cmds[i]) {
         printf("command: %d\n", i);
-        rotate(i, (cmd[1] == '\'') ? -1 : 1);
+        rotate(i, (cmd[ci+1] == '\'') ? -1 : 1);
       }
-    } 
+    }
+    
+    while(cmd[ci]!='\n'&&cmd[ci]!=0) ci++;
+    cmd[ci++] = ' ';
   } 
 }
