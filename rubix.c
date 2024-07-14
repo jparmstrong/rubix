@@ -62,7 +62,7 @@ void rotate(byte f, byte a) {
     byte n = 0;
     for(byte i=0;i<4;i++) {
 //      printf("projection: 0x%02X,  %d, %d\n", X[f][i], fs(f,i), as(f,i));
-      rotate_face(fs(f,i), as(f,i));
+//      rotate_face(fs(f,i), as(f,i));
       for(byte j=0;j<3;j++) {
         n = (4+i-1)%4;
        // printf("%d, %d, %d \n", fs(f,i), E[as(f,i)][j], n);
@@ -87,6 +87,22 @@ void print_cmd(char* cmd) {
     printf("%c", cmd[i]);
   }
   printf("\n");
+}
+
+void usage() {
+  printf(
+    "\nUSAGE: \n"
+    "q        quit\n"
+    "?        help\n"
+    "turn cube clockwise (count-clockwise):\n"
+    "u (u')   turn up face\n"
+    "l (l')   turn left face\n"
+    "r (r')   turn right face\n"
+    "f (f')   turn front face\n"
+    "b (b')   turn back face\n"
+    "d (d')   turn down face\n"
+    "\n"
+  );
 }
 
 int main() {
@@ -116,15 +132,17 @@ int main() {
 
     if(cmd[ci]=='c') {
       reset();
+      cmd[0] = 0;
+      ci = 0;
       continue;
     }
 
     // Help 
     if(cmd[ci]=='?') {
-      printf("commands: q ? ");
-      for(int j=0;j<6;j++) 
-         printf("%c %c' ", cmds[j], cmds[j]);
-      printf("\n");
+      usage();
+      printf("Press any key to continue...");
+      getchar();
+      cmd[ci]= 0;
       continue;
     }
 
