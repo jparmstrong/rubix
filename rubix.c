@@ -73,8 +73,12 @@ void reset(byte* cube) {
 }
 
 void print_cmd(char* cmd) {
-  printf("RUBIX CUBE 1000\nby JP Armstrong - July 2024\n\n");
-  printf("(? for help) Cmds: ");
+  printf(
+    "~ RUBIX CUBE 1000 ~~~~~~~~~~~~~~~\n"
+    "~ jp@armstrong.sh (c) July 2024 ~\n"
+    "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"
+    "? for help ~ cmds: "
+  );
 
   for(int i=0;cmd[i]!='\0';i++) {
     printf("%c", cmd[i]);
@@ -159,7 +163,6 @@ int main() {
       ci = 0;
       continue;
     }
-
 
     // Debug mode
     if(cmd[ci]=='!'){
