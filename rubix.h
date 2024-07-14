@@ -1,12 +1,11 @@
-#define byte char
+#include <stdbool.h>
+#define byte unsigned char
 
 typedef enum sides {
     TOP, LEFT, FRONT, RIGHT, BACK, BOTTOM
 } Side;
 
-int print_cube(byte*);
-
-int print_cube2(byte*);
+int print_cube(byte*, bool);
 
 int print(byte*);
 
