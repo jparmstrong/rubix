@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include "rubix.h"
+#include "print.h"
 
 // #include <ctype.h>
 

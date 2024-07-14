@@ -46,7 +46,7 @@ int print_cube(byte* cube, bool num) {
     print_side(cube, BOTTOM, 1, num);
 }
 
-int print(byte* cube) {
+int print_line(byte* cube) {
   for (int i=0;i<54;i++) {
     if(i%9==0) printf("\n");
     printf("%d ", cube[i]);
