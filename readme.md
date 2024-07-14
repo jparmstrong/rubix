@@ -1,6 +1,6 @@
 # Rubix Cube 1000
 
-Rubick's cube simulator written in C. 
+Rubik's cube simulator written in C. 
 
 To build:
 
