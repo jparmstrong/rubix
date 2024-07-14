@@ -31,3 +31,7 @@ f (f')   turn front face
 b (b')   turn back face
 d (d')   turn down face
 ```
+
+## Screenshot
+
+![Screenshot of Rubix Game](screenshot.png)
