@@ -6,6 +6,7 @@ Copyright (c) July 2024 - jp@armstrong.sh
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <time.h>
 #include "rubix.h"
 
 #define NUM_CUBES 0
@@ -34,16 +35,11 @@ const byte E[][4] = {
   {6, 7, 8}  // BOTTOM
 };
 
-typedef struct Marquee {
-  char text[100];
-  int size;
-  int count;
-} Marquee;
+const char* cmds = "ulfrbd";
 
 // get face and rotation from adjacent matrix
 #define fs(x, y) ((X[x][y] & 0xF0) >> 4)
 #define as(x, y)  (X[x][y] & 0x0F)
-
 
 void rotate_face(byte f, byte a) {
   for(int i=0;i<9;i++) {
@@ -68,7 +64,7 @@ void rotate(byte f, byte a) {
   }
 }
 
-void reset() {  
+void reset(byte* cube) {  
   for (int i=0;i<6;i++) {
     for (int j=0;j<9;j++) {
       cube[i*9+j] = i;
@@ -77,12 +73,22 @@ void reset() {
 }
 
 void print_cmd(char* cmd) {
-  printf("RUBIX CUBE 1000\nby JP Armstrong - July 2024\n\nCmds: ");
+  printf("RUBIX CUBE 1000\nby JP Armstrong - July 2024\n\n");
+  printf("(? for help) Cmds: ");
 
   for(int i=0;cmd[i]!='\0';i++) {
     printf("%c", cmd[i]);
   }
   printf("\n");
+}
+
+void scramble(byte* cube) {
+  int n=5;
+  for(int i=0;i<n;i++) {
+     int cmd = rand() % 6 + 1;
+     int rot = rand() % 2 + 1;
+     rotate(cmd, rot ? -1 : 1);
+  }
 }
 
 void usage() {
@@ -91,7 +97,9 @@ void usage() {
     "q        quit\n"
     "?        help\n"
     "!        debug mode\n"
-    "turn cube clockwise (count-clockwise):\n"
+    "c        reset cube\n"
+    "s        scramble cube\n"
+    "turn cube clockwise (counter-clockwise):\n"
     "u (u')   turn up face\n"
     "l (l')   turn left face\n"
     "r (r')   turn right face\n"
@@ -103,11 +111,11 @@ void usage() {
 }
 
 int main() {
-  reset();
+  srand(time(NULL));
+  reset(cube);
   
   int ci = 0;
-  char cmd[180] = {0};
-  char* cmds = "ulfrbd";
+  char cmd[1024] = {0};
   byte skip = 0;
   byte debug = 0;
   while(1) {
@@ -132,16 +140,28 @@ int main() {
     if(skip = cmd[ci]=='\n')
       continue;
 
+    // Quit
     if(cmd[ci]=='q')
       return 0;
 
+    // reset
     if(cmd[ci]=='c') {
-      reset();
+      reset(cube);
       cmd[0] = 0;
       ci = 0;
       continue;
     }
 
+    // scramble
+    if(cmd[ci]=='s') {
+      scramble(cube);
+      cmd[0] = 0;
+      ci = 0;
+      continue;
+    }
+
+
+    // Debug mode
     if(cmd[ci]=='!'){
       debug=!debug;
       cmd[ci]=0;
@@ -159,7 +179,6 @@ int main() {
 
     for(int i=0;i<6;i++) {
       if(cmd[ci]==cmds[i]) {
-        printf("command: %d\n", i);
         rotate(i, (cmd[ci+1] == '\'') ? -1 : 1);
       }
     }
