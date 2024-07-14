@@ -16,7 +16,7 @@ const char* cmds = "ulfrbd";
 
 void print_cmd(char* cmd) {
   printf(
-    "~ RUBIX CUBE 1000 ~~~~~~~~~~~~~~~\n"
+    "~ RUBIX CUBE 2000 ~~~~~~~~~~~~~~~\n"
     "~ jp@armstrong.sh (c) July 2024 ~\n"
     "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n"
     "? for help ~ cmds: "

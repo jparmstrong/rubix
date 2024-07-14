@@ -1,5 +1,5 @@
 /*
-RUBIX CUBE 1000 
+RUBIX CUBE 2000 
 Copyright (c) July 2024 - jp@armstrong.sh
 */
 #include <stdio.h>

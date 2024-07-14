@@ -1,4 +1,4 @@
-# Rubix Cube 1000
+# Rubix Cube 2000
 
 Rubik's cube simulator written in C. 
 
