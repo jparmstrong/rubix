@@ -46,9 +46,8 @@ typedef struct Marquee {
 
 
 void rotate_face(byte f, byte a) {
-  while(a--%4) {
-    for(int i=0;i<9;i++)
-      cube[f*9+F[8-i]] = cube_[f*9 + i];
+  for(int i=0;i<9;i++) {
+    cube[f*9+F[8-i]] = cube_[f*9 + i];
   }
 }
 
@@ -61,11 +60,8 @@ void rotate(byte f, byte a) {
  
     byte n = 0;
     for(byte i=0;i<4;i++) {
-//      printf("projection: 0x%02X,  %d, %d\n", X[f][i], fs(f,i), as(f,i));
-//      rotate_face(fs(f,i), as(f,i));
       for(byte j=0;j<3;j++) {
         n = (4+i-1)%4;
-       // printf("%d, %d, %d \n", fs(f,i), E[as(f,i)][j], n);
         *(cube + fs(f,i)*9 + E[as(f,i)][j]) = *(cube_ + (fs(f,n)*9) + E[as(f,n)][j]);
       }
     }
@@ -94,6 +90,7 @@ void usage() {
     "\nUSAGE: \n"
     "q        quit\n"
     "?        help\n"
+    "!        debug mode\n"
     "turn cube clockwise (count-clockwise):\n"
     "u (u')   turn up face\n"
     "l (l')   turn left face\n"
@@ -112,12 +109,20 @@ int main() {
   char cmd[180] = {0};
   char* cmds = "ulfrbd";
   byte skip = 0;
+  byte debug = 0;
   while(1) {
     if (!skip) {
         printf("\e[1;1H\e[2J");
         print_cmd(cmd);
         print_cube(cube, NUM_CUBES);
     }
+
+    if(debug) {
+      printf("\n");
+      print_nums(cube);
+      printf("\n");
+    }
+
     printf("> ");
 
     if (fgets(cmd + ci, sizeof(cmd), stdin) == NULL) {
@@ -134,6 +139,12 @@ int main() {
       reset();
       cmd[0] = 0;
       ci = 0;
+      continue;
+    }
+
+    if(cmd[ci]=='!'){
+      debug=!debug;
+      cmd[ci]=0;
       continue;
     }
 

@@ -14,7 +14,8 @@ const char *blocks[] = {
 int print_nums(byte* cube) {
   for (int i=0;i<6;i++) {
     for (int j=0;j<9;j++) {
-      printf("%d ", cube[i*9+j]);
+      int a = cube[i*9+j];
+      printf(blocks[a],'0'+a);
     }
     printf("\n");
   }
