@@ -9,4 +9,13 @@ int print_cube(byte*, bool);
 
 int print(byte*);
 
-int print_nums(byte* cube);
+int print_nums(byte*);
+
+void rotate(byte*, byte, byte);
+
+void rotate_face(byte*, byte, byte);
+
+void reset(byte*);
+
+void scramble(byte*);
+
