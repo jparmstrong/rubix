@@ -82,7 +82,7 @@ int main() {
   byte debug = 0;
   while(1) {
     if (!skip) {
-//        printf("\e[1;1H\e[2J");
+        printf("\e[1;1H\e[2J");
         print_cmd(cmd);
         print_cube(cube, NUM_CUBES);
     }
