@@ -18,12 +18,12 @@ const byte F[] = {6, 3, 0, 7, 4, 1, 8, 5, 2};
 
 // adjacency matrix (face and rotation: T, R, L, B)
 const byte X[][4] = {
-  {0x40, 0x30, 0x20, 0x10}, // U
-  {0x02, 0x22, 0x52, 0x41}, // L
-  {0x03, 0x32, 0x50, 0x11}, // F
-  {0x01, 0x42, 0x51, 0x21}, // R
-  {0x00, 0x12, 0x53, 0x31}, // B
-  {0x13, 0x23, 0x33, 0x43}  // D
+  {0x40, 0x30, 0x20, 0x10}, // U 0000
+  {0x0A, 0x22, 0x52, 0x49}, // L 1001
+  {0x0B, 0x32, 0x58, 0x11}, // F 1010
+  {0x01, 0x4A, 0x59, 0x21}, // R 0110
+  {0x00, 0x1A, 0x53, 0x39}, // B 0101
+  {0x13, 0x23, 0x33, 0x43}  // D 0000
 };
 
 // adjacent edges
@@ -38,7 +38,7 @@ const byte E[][4] = {
 // get face and rotation from adjacent matrix
 #define fs(x, y) ((X[x][y] & 0xF0) >> 4)
 #define as(x, y)  (X[x][y] & 0x07)
-#define ss(x, y, z) ((z>0xF0)!=((X[x][y] & 0x08) >> 3))
+#define ss(x, y) ((X[x][y] & 0x08) >> 3)
 
 void rotate_face(byte *cube, byte f, byte a) {
   for(int i=0;i<9;i++) {
@@ -57,9 +57,10 @@ void rotate(byte *cube, byte f, byte a) {
     for(int i=0;i<4;i++) {
       for(int j=0;j<3;j++) {
         n = (4+i-1)%4;
-        int js =  E[as(f,n)][(i%2==0)?(2-j):j];
-        printf("js: %d, %d, %d, %d \n", a, (i%2==1)?(2-i):j, j, js);
-        *(cube + fs(f,i)*9 + E[as(f,i)][j]) = *(cube_ + (fs(f,n)*9) + js);
+        int p = E[as(f,i)][j];
+        int p_ = E[as(f,n)][(ss(f,i))?(2-j):j];
+//        printf("f: %d, i: %d, p: %d, p_: %d, ss: %d, X: %02x \n", f, i, p, p_, ss(f,i), X[f][i]);
+        *(cube + fs(f,i)*9 + p) = *(cube_ + (fs(f,n)*9) + p_);
       }
     }
   }

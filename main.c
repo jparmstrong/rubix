@@ -50,7 +50,6 @@ void usage() {
 
 int execute(byte* cube, byte* cmd, int ci) {
   while(cmd[ci]!='\0'&&cmd[ci]!='\n') {
-    printf("? %c", cmd[ci]);
     if (cmd[ci]>='A' && cmd[ci]<='Z') {
       cmd[ci] += 32;
     }
