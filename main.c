@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 #include "rubix.h"
 #include "print.h"
 
-// #include <ctype.h>
 
 #define NUM_CUBES 0
 
@@ -47,6 +47,33 @@ void usage() {
   );
 }
 
+
+int execute(byte* cube, byte* cmd, int ci) {
+  while(cmd[ci]!='\0'&&cmd[ci]!='\n') {
+    printf("? %c", cmd[ci]);
+    if (cmd[ci]>='A' && cmd[ci]<='Z') {
+      cmd[ci] += 32;
+    }
+    for(int i=0;i<6;i++) {
+      if(cmd[ci]==cmds[i]) {
+        if(cmd[ci+1]>='1'&&cmd[ci+1]<='4'){
+          rotate(cube, i, cmd[ci+1]-'0');
+          ci++;
+        }
+        else if(cmd[ci+1] == '\'') {
+          rotate(cube, i, -1);
+          ci++;
+        } else {
+          rotate(cube, i, 1);
+        }
+        break;
+      }
+    }
+    ci++;
+  }
+  return ci;
+}
+
 int main() {
   reset(cube);
   
@@ -56,7 +83,7 @@ int main() {
   byte debug = 0;
   while(1) {
     if (!skip) {
-        printf("\e[1;1H\e[2J");
+//        printf("\e[1;1H\e[2J");
         print_cmd(cmd);
         print_cube(cube, NUM_CUBES);
     }
@@ -112,12 +139,8 @@ int main() {
       continue;
     }
 
-    for(int i=0;i<6;i++) {
-      if(cmd[ci]==cmds[i]) {
-        rotate(cube, i, (cmd[ci+1] == '\'') ? -1 : 1);
-      }
-    }
-    
+    ci = execute(cube, cmd, ci);
+   
     while(cmd[ci]!='\n'&&cmd[ci]!=0) ci++;
     cmd[ci++] = ' ';
   } 

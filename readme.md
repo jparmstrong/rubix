@@ -11,7 +11,7 @@ make
 To run:
 
 ```
-./rubix
+./build/rubix
 ```
 
 To play:
