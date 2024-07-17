@@ -144,14 +144,18 @@ int prompt() {
   } 
 }
 
-int cli(int scram) {
+int cli(int scram, char* cli_cmds) {
   reset(cube);
   if(scram)
     scramble(cube);
 
   int ci = 0;
+  while(strlen(cli_cmds)>0) {
+    ci = execute(cube, cli_cmds, 0);
+    cli_cmds = (cli_cmds + ci) ;
+  }
+  ci = 0;
   char cmd[1024] = {0};
- 
   while(1) {
     print_cli(cube);
     if (fgets(cmd + ci, sizeof(cmd), stdin) == NULL) {
@@ -186,7 +190,11 @@ int cli(int scram) {
 
 int main(int argc, char *argv[]) {
   if(argc>2&&strcmp(argv[1], "-s")==0) {
-    cli(atoi(argv[2]));
+    if(argv[2][0] == '1')
+      cli(1, "\0");
+    else {
+      cli(0, argv[2]);
+    }
   } else {
     prompt();
   }
