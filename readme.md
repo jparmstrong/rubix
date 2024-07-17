@@ -32,6 +32,14 @@ b (b')   turn back face
 d (d')   turn down face
 ```
 
+To run head-less::
+
+```
+$ echo "l'd'u'" | ./build/rubix -s "udl"
+300400100412412412033022011444333222115445335355255155 0
+000000000111111111222222222333333333444444444555555555 1
+```
+
 ## Screenshot
 
 ![Screenshot of Rubix Game](screenshot.png)
