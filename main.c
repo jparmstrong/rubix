@@ -6,9 +6,8 @@
 #include "rubix.h"
 #include "print.h"
 
-
+// Debug flag, enables numbers in cube output
 #define NUM_CUBES 0
-
 #define RUBIX_SIZE 55
 byte cube[RUBIX_SIZE];
 
@@ -73,7 +72,7 @@ int execute(byte* cube, byte* cmd, int ci) {
   return ci;
 }
 
-int main() {
+int prompt() {
   reset(cube);
   
   int ci = 0;
@@ -144,3 +143,53 @@ int main() {
     cmd[ci++] = ' ';
   } 
 }
+
+int cli(int scram) {
+  reset(cube);
+  if(scram)
+    scramble(cube);
+
+  int ci = 0;
+  char cmd[1024] = {0};
+ 
+  while(1) {
+    print_cli(cube);
+    if (fgets(cmd + ci, sizeof(cmd), stdin) == NULL) {
+      return 0;
+    }
+
+    // Quit
+    if(cmd[ci]=='q')
+      return 0;
+
+    // reset
+    if(cmd[ci]=='c') {
+      reset(cube);
+      cmd[0] = 0;
+      ci = 0;
+      continue;
+    }
+
+    // scramble
+    if(cmd[ci]=='s') {
+      scramble(cube);
+      cmd[0] = 0;
+      ci = 0;
+      continue;
+    }
+
+    ci = execute(cube, cmd, ci); 
+    while(cmd[ci]!='\n'&&cmd[ci]!=0) ci++;
+    cmd[ci++] = ' '; 
+  }
+}
+
+int main(int argc, char *argv[]) {
+  if(argc>2&&strcmp(argv[1], "-s")==0) {
+    cli(atoi(argv[2]));
+  } else {
+    prompt();
+  }
+}
+
+

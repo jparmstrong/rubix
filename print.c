@@ -4,7 +4,7 @@
 
 const char *blocks[] = {
     "\x1B[30;47m %c\x1b[0m\0", // WHITE
-    "\x1B[30;45m %c\x1b[0m\0", // MAGENTA
+    "\x1B[48;5;208m %c\x1b[0m\0", // ORANGE
     "\x1B[30;42m %c\x1b[0m\0", // GREEN
     "\x1B[30;41m %c\x1b[0m\0", // RED
     "\x1B[30;44m %c\x1b[0m\0", // BLUE
@@ -46,11 +46,12 @@ int print_cube(byte* cube, bool num) {
     print_side(cube, BOTTOM, 1, num);
 }
 
-int print_line(byte* cube) {
+int print_cli(byte* cube) {
+  byte done = 1;
   for (int i=0;i<54;i++) {
-    if(i%9==0) printf("\n");
-    printf("%d ", cube[i]);
+    done = (done && cube[i]==(int) i/9);
+    printf("%d", cube[i]);
   } 
-  printf("\n");
+  printf(" %d\n", done);
 }
 
