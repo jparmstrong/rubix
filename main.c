@@ -47,7 +47,7 @@ void usage() {
 }
 
 
-int execute(byte* cube, byte* cmd, int ci) {
+int execute(byte* cube, char* cmd, int ci) {
   while(cmd[ci]!='\0'&&cmd[ci]!='\n') {
     if (cmd[ci]>='A' && cmd[ci]<='Z') {
       cmd[ci] += 32;
@@ -72,7 +72,7 @@ int execute(byte* cube, byte* cmd, int ci) {
   return ci;
 }
 
-int prompt() {
+void prompt() {
   reset(cube);
   
   int ci = 0;
@@ -95,15 +95,16 @@ int prompt() {
     printf("> ");
 
     if (fgets(cmd + ci, sizeof(cmd), stdin) == NULL) {
-      return 0;
+      return;
     }
-     
-    if(skip = cmd[ci]=='\n')
+
+    skip = (cmd[ci]=='\n');
+    if(skip)
       continue;
 
     // Quit
     if(cmd[ci]=='q')
-      return 0;
+      return;
 
     // reset
     if(cmd[ci]=='c') {
@@ -144,7 +145,7 @@ int prompt() {
   } 
 }
 
-int cli(int scram, char* cli_cmds) {
+void cli(int scram, char* cli_cmds) {
   reset(cube);
   if(scram)
     scramble(cube);
@@ -159,12 +160,12 @@ int cli(int scram, char* cli_cmds) {
   while(1) {
     print_cli(cube);
     if (fgets(cmd + ci, sizeof(cmd), stdin) == NULL) {
-      return 0;
+      return;
     }
 
     // Quit
     if(cmd[ci]=='q')
-      return 0;
+      return;
 
     // reset
     if(cmd[ci]=='c') {

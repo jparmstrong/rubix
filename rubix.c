@@ -12,7 +12,6 @@ Copyright (c) July 2024 - jp@armstrong.sh
 #define RUBIX_SIZE 55
 byte cube_[RUBIX_SIZE]; // prev state
 
-
 // rotation matrix
 const byte F[] = {6, 3, 0, 7, 4, 1, 8, 5, 2};
 
