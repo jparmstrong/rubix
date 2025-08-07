@@ -66,7 +66,7 @@ void rotate(byte *cube, byte f, byte a) {
 }
 
 void reset(byte* cube) {  
-  srand(time(NULL));
+  srandom(time(NULL));
   for (int i=0;i<6;i++) {
     for (int j=0;j<9;j++) {
       cube[i*9+j] = i;
@@ -77,8 +77,8 @@ void reset(byte* cube) {
 void scramble(byte* cube) {
   int n=5;
   for(int i=0;i<n;i++) {
-     int cmd = rand() % 6 + 1;
-     int rot = rand() % 2 + 1;
+     int cmd = (int) random() % 6 + 1;
+     int rot = (int) random() % 2 + 1;
      rotate(cube, cmd, rot ? -1 : 1);
   }
 }
